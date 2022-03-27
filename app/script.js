@@ -4,14 +4,24 @@
         .then(response => response.json())
         .then(
             (data) => {
-            clearlist();
-                let div = document.getElementById("users");
-                var elem = "<ul>"
-                data.data.forEach((user)=>{
-                  elem += "<li>"+ user.name +"  <input type='button' onClick='onEdit("+user.id+")' value='Edit'/>   <input type='button' onClick='onDelete("+user.id+")' value='Delete'/></div></li>";           
+                clearlist();
+                let tableelem = `<tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                                </tr>`;
+                let table = document.getElementById("users");
+                data.data.forEach(user=>{
+                 tableelem += 
+                `<tr>
+                  <td>${user.name}</td>
+                  <td>${user.email}</td>  
+                  <td> <input type='button' onClick='onEdit(${user.id})' value='Edit'/> </td>
+                  <td> <input type='button' onClick='onDelete(${user.id})' value='Delete'/> </td>      
+                </tr>`;
                 });
-                elem += "</ul>";
-                div.innerHTML = elem;
+                table.innerHTML = tableelem;
             }
         ).catch(err => console.log(err));
     } catch (err) {
@@ -29,7 +39,7 @@
         }
     };
     try {
-      const res = fetch(`http://localhost:8080/adduser`, {
+      fetch(`http://localhost:8080/adduser`, {
         method: "post",
         headers: {
           "Content-Type": "application/json"
@@ -39,7 +49,7 @@
       .then(response => response.json())
       .then( (data) => {
           console.log(data);
-        getAllData();
+          getAllData();
       }).catch(err => console.log(err));   
     } catch (err) {
         console.log(err);
@@ -58,3 +68,28 @@
   function onDelete(id){
     console.log(id)
   }
+
+
+var xhr = new XMLHttpRequest(); //invoke a new instance of the XMLHttpRequest
+xhr.open('GET', 'https://622383da3af069a0f9a42a61.mockapi.io/api/v1/employee'); // open a GET request
+xhr.send(); // send the request to the server.
+xhr.onload = function success() {
+  var data = JSON.parse(this.responseText); //parse the string to JSON
+  console.log(data);
+}; // call success function if request is successful
+xhr.onerror = function error(err) {
+  console.log('Request Failed', err); //error details will be in the "err" object
+};  // call error function if request failed
+
+fetch('https://622383da3af069a0f9a42a61.mockapi.io/api/v1/employee/50', {
+  method: 'GET',
+  })
+  .then(response => response.json())
+  .then(json => console.log(json))
+
+
+  var requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+  };
+  
